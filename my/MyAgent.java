@@ -5,6 +5,7 @@ import java.util.List;
 import base.Action;
 import base.Agent;
 import base.Perceptions;
+import blocksworld.Block;
 import blocksworld.BlocksWorld;
 import blocksworld.BlocksWorldAction;
 import blocksworld.BlocksWorldAction.Type;
@@ -67,15 +68,23 @@ public class MyAgent implements Agent {
 
 		if (perceptions.getRemainingPlan() != null) {
 			plan = new PlanningAction(PlanningActionType.CONTINUE_PLAN);
-			Type stackType = Type.STACK;
 
-			BlocksWorldAction stackAction = new BlocksWorldAction(stackType);
-			plan.addAction(stackAction);
-
-			Type unstackType = Type.UNSTACK;
-			BlocksWorldAction unstackAction = new BlocksWorldAction(unstackType);
-			plan.addAction(unstackAction);
 		}
+
+		Block blockA = new Block('A');
+		Block blockB = new Block('B');
+		Block blockC = new Block('C');
+
+		BlocksWorldAction unstackAction = new BlocksWorldAction(Type.UNSTACK, blockA, blockB);
+		plan.addAction(unstackAction);
+
+		BlocksWorldAction pickupAction = new BlocksWorldAction(Type.PICKUP, blockB);
+		BlocksWorldAction stackAction = new BlocksWorldAction(Type.STACK, blockB, blockC);
+		BlocksWorldAction putdownAction = new BlocksWorldAction(Type.PUTDOWN, blockB);
+
+		plan.addAction(pickupAction);
+		plan.addAction(stackAction);
+		plan.addAction(putdownAction);
 
 		// TODO: revise beliefs; if necessary, make a plan; return an action.
 
